@@ -72,4 +72,4 @@ Alexey Krylov
 
 ## License
 
-MIT License. Copyright 2017 Alexey Krylov
+MIT License. Copyright 2018 Alexey Krylov
