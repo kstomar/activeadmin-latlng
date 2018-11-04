@@ -71,8 +71,26 @@
           searchBox.set('map', googleMapObject.map);
           googleMapObject.map.setZoom(googleMapObject.zoom);
         });
+
+        $(window).keydown(function(e){
+          let ENTER_KEY_CODE = 13;
+          if (e.keyCode == ENTER_KEY_CODE && $("#latlng-search-box").is(":focus")) {
+            event.preventDefault();
+          }
+        })
       }
     }
   </script>
-  <input id="latlng-search-box" type="text" style="margin-top: 10px; height: 18px;" placeholder="Search Google Maps...">
+  <style>
+    #latlng-search-box {
+      margin-top: 10px;
+      height: 28px;
+      font-family: Roboto, Arial, sans-serif;
+      font-weight: 400;
+      box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px -1px;
+      font-size: 16px;
+      width: 50%;
+    }
+  </style>
+  <input id="latlng-search-box" type="text" style="z-index: 1;" placeholder="Search Google Maps...">
 </li>
