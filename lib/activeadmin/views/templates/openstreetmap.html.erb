@@ -63,6 +63,13 @@
         });
       },
 
+      getCoordinates: function() {
+        return {
+          lat: parseFloat($("#" + osmObject.idLat).val()) || <%= default_lat %>,
+          lng: parseFloat($("#" + osmObject.idLng).val()) || <%= default_lng %>,
+        };
+      },
+
       newLocation: function(item) {
         $("#"+osmObject.idLat).val(item.lat);
         $("#"+osmObject.idLng).val(item.lon);
@@ -88,7 +95,8 @@
     }
 
     $(document).ready(function () {
-      osmObject.init(<%= default_lat %>, <%= default_lng %>);
+      var coordinates = osmObject.getCoordinates();
+      osmObject.init(coordinates.lat, coordinates.lng);
     });
   </script>
   <style>
@@ -96,12 +104,12 @@
       height: 18px;
       position: relative;
       left: 52px;
-      top: 39px;
+      top: 44px;
       max-width: 400px;
       z-index: 2;
       border-radius: 4px;
     }
   </style>
-  <input id="latlng-search-box" class="leaflet-bar" type="text" style="" placeholder="Search address...">
+  <input id="latlng-search-box" class="leaflet-bar" type="text" style="" placeholder="Type address and hit enter...">
   <div id="locationPicker" style="width: auto; height: <%= height %>px;"></div>
 </li>
