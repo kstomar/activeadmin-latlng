@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    activeadmin_latlng (1.4.0)
+    activeadmin_latlng (1.5.0)
       activeadmin
 
 GEM
