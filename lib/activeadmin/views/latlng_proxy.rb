@@ -2,7 +2,7 @@ module ActiveAdmin
   module Views
     class LatlngProxy < FormtasticProxy
       def build(_, *args, &_block)
-        @lang, @id_lat, @id_lng, @height, @loading_map, @api_key, @default_lat, @default_lng, @map_zoom = *args
+        @lang, @id_lat, @id_lng, @height, @loading_map, @api_key, @default_lat, @default_lng, @map_zoom, @map_load_id = *args
       end
 
       def key
@@ -26,7 +26,8 @@ module ActiveAdmin
           id_lng: @id_lng,
           map_zoom: @map_zoom,
           default_lat: @default_lat,
-          default_lng: @default_lng
+          default_lng: @default_lng,
+          map_load_id: @map_load_id
         }
 
         render_template_with_hash(template, variables)

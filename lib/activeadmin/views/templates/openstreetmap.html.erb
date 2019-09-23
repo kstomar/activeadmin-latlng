@@ -2,10 +2,11 @@
   <%= loading_map_code %>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
   <script>
-    var osmObject = {
+
+    var <%= map_load_id %> = {
       idLat: '<%= id_lat %>',
       idLng: '<%= id_lng %>',
-      idSearch: 'latlng-search-box',
+      idSearch: 'latlng-search-box-<%= map_load_id %>',
       zoom: '<%= map_zoom %>',
       app: {},
       map: null,
@@ -13,7 +14,7 @@
 
       init: function(lat, lon) {
         try {
-          osmObject.map = new L.Map('locationPicker');
+          <%= map_load_id %>.map = new L.Map('<%= map_load_id %>');
         } catch(e) {
           console.log(e);
         }
@@ -22,42 +23,42 @@
         var osmAttrib='Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors';
         var osm = new L.TileLayer(osmUrl, {minZoom: 1, maxZoom: 20, attribution: osmAttrib});
 
-        osmObject.map.setView([lat, lon],10);
-        osmObject.map.addLayer(osm);
+        <%= map_load_id %>.map.setView([lat, lon],10);
+        <%= map_load_id %>.map.addLayer(osm);
 
-        osmObject.map.setZoom(osmObject.zoom);
+        <%= map_load_id %>.map.setZoom(<%= map_load_id %>.zoom);
 
-        if (!osmObject.marker) {
-          osmObject.marker = new L.marker([lat, lon], { draggable: 'true' });
+        if (!<%= map_load_id %>.marker) {
+          <%= map_load_id %>.marker = new L.marker([lat, lon], { draggable: 'true' });
         }else{
-          osmObject.marker.setLatLng([lat, lon]);
+          <%= map_load_id %>.marker.setLatLng([lat, lon]);
         }
 
-        osmObject.marker.on('dragend', function(e){
-          osmObject.map.setView(e.target.getLatLng());
+        <%= map_load_id %>.marker.on('dragend', function(e){
+          <%= map_load_id %>.map.setView(e.target.getLatLng());
 
-          $("#"+osmObject.idLat).val(e.target.getLatLng().lat);
-          $("#"+osmObject.idLng).val(e.target.getLatLng().lng);
+          $("#"+<%= map_load_id %>.idLat).val(e.target.getLatLng().lat);
+          $("#"+<%= map_load_id %>.idLng).val(e.target.getLatLng().lng);
         });
 
-        osmObject.map.addLayer(osmObject.marker);
+        <%= map_load_id %>.map.addLayer(<%= map_load_id %>.marker);
 
-        $("#"+osmObject.idLat).val(lat);
-        $("#"+osmObject.idLat).on('change', function(){
-          osmObject.marker.setLatLng([Number($(this).val()), osmObject.marker.getLatLng().lng]);
-          osmObject.map.setView(osmObject.marker.getLatLng());
+        $("#"+<%= map_load_id %>.idLat).val(lat);
+        $("#"+<%= map_load_id %>.idLat).on('change', function(){
+          <%= map_load_id %>.marker.setLatLng([Number($(this).val()), <%= map_load_id %>.marker.getLatLng().lng]);
+          <%= map_load_id %>.map.setView(<%= map_load_id %>.marker.getLatLng());
         });
 
-        $("#"+osmObject.idLng).val(lon);
-        $("#"+osmObject.idLng).on('change', function(){
-          osmObject.marker.setLatLng([osmObject.marker.getLatLng().lat, Number($(this).val())]);
-          osmObject.map.setView(osmObject.marker.getLatLng());
+        $("#"+<%= map_load_id %>.idLng).val(lon);
+        $("#"+<%= map_load_id %>.idLng).on('change', function(){
+          <%= map_load_id %>.marker.setLatLng([<%= map_load_id %>.marker.getLatLng().lat, Number($(this).val())]);
+          <%= map_load_id %>.map.setView(<%= map_load_id %>.marker.getLatLng());
         });
 
-        $("#"+osmObject.idSearch).keypress(function(e) {
+        $("#"+<%= map_load_id %>.idSearch).keypress(function(e) {
           let ENTER_KEY_CODE = 13;
           if (e.keyCode == ENTER_KEY_CODE) {
-            var item = osmObject.searchLocation($(this).val(), osmObject.newLocation);
+            var item = <%= map_load_id %>.searchLocation($(this).val(), <%= map_load_id %>.newLocation);
             e.preventDefault();
           }
         });
@@ -65,16 +66,16 @@
 
       getCoordinates: function() {
         return {
-          lat: parseFloat($("#" + osmObject.idLat).val()) || <%= default_lat %>,
-          lng: parseFloat($("#" + osmObject.idLng).val()) || <%= default_lng %>,
+          lat: parseFloat($("#" + <%= map_load_id %>.idLat).val()) || <%= default_lat %>,
+          lng: parseFloat($("#" + <%= map_load_id %>.idLng).val()) || <%= default_lng %>,
         };
       },
 
       newLocation: function(item) {
-        $("#"+osmObject.idLat).val(item.lat);
-        $("#"+osmObject.idLng).val(item.lon);
-        osmObject.marker.setLatLng([item.lat, item.lon]);
-        osmObject.map.setView([item.lat, item.lon]);
+        $("#"+<%= map_load_id %>.idLat).val(item.lat);
+        $("#"+<%= map_load_id %>.idLng).val(item.lon);
+        <%= map_load_id %>.marker.setLatLng([item.lat, item.lon]);
+        <%= map_load_id %>.map.setView([item.lat, item.lon]);
       },
 
       searchLocation: function(text, callback) {
@@ -95,12 +96,12 @@
     }
 
     $(document).ready(function () {
-      var coordinates = osmObject.getCoordinates();
-      osmObject.init(coordinates.lat, coordinates.lng);
+      var coordinates = <%= map_load_id %>.getCoordinates();
+      <%= map_load_id %>.init(coordinates.lat, coordinates.lng);
     });
   </script>
   <style>
-    #latlng-search-box {
+    .latlng-search-box {
       height: 18px;
       position: relative;
       left: 52px;
@@ -110,6 +111,6 @@
       border-radius: 4px;
     }
   </style>
-  <input id="latlng-search-box" class="leaflet-bar" type="text" style="" placeholder="Type address and hit enter...">
-  <div id="locationPicker" style="width: auto; height: <%= height %>px;"></div>
+  <input id="latlng-search-box-<%= map_load_id %>" class="leaflet-bar latlng-search-box" type="text" style="" placeholder="Type address and hit enter...">
+  <div id="<%= map_load_id %>" style="width: auto; height: <%= height %>px;"></div>
 </li>
